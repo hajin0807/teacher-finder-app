@@ -1,0 +1,9 @@
+streamlit
+pandas
+requests
+google-auth-oauthlib
+google-api-python-client
+gspread
+oauth2client
+anthropic
+youtube-transcript-api
