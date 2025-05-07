@@ -43,17 +43,8 @@ if 'email_content' not in st.session_state:
     st.session_state['email_content'] = None
 
 # API 키 설정
-# API 키를 하드코딩하여 오류 우회 (테스트용)
-try:
-    YOUTUBE_API_KEY = st.secrets["YOUTUBE_API_KEY"]
-except KeyError:
-    st.error("YouTube API 키가 필요합니다. Streamlit Cloud 관리 페이지에서 secrets를 설정해주세요.")
-    st.stop()
-try:
-    CLAUDE_API_KEY = st.secrets["CLAUDE_API_KEY"]
-except KeyError:
-    st.error("Claude API 키가 필요합니다. Streamlit Cloud 관리 페이지에서 secrets를 설정해주세요.")
-    st.stop()
+YOUTUBE_API_KEY = st.secrets["YOUTUBE_API_KEY"]
+CLAUDE_API_KEY = st.secrets["CLAUDE_API_KEY"]
     
 # 디버깅용 (개발 완료 후 제거)
 # API 키 정보 표시 (옵션)
