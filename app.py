@@ -58,11 +58,32 @@ def setup_google_sheets():
         'https://spreadsheets.google.com/feeds',
         'https://www.googleapis.com/auth/drive'
     ]
-    import json
-    service_account_info = json.loads(st.secrets["gcp_service_account"])
-    credentials = ServiceAccountCredentials.from_dict(service_account_info, scope)
-    client = gspread.authorize(credentials)
-    return client
+    
+    try:
+        # 서비스 계정 JSON 문자열 가져오기
+        service_account_info = st.secrets["gcp_service_account"]
+        
+        # JSON 문자열을 임시 파일로 저장
+        import tempfile
+        import json
+        import os
+        
+        with tempfile.NamedTemporaryFile(mode='w+', suffix='.json', delete=False) as temp:
+            json.dump(json.loads(service_account_info), temp)
+            temp_file_name = temp.name
+        
+        # 임시 파일로부터 인증 정보 생성
+        credentials = ServiceAccountCredentials.from_json_keyfile_name(temp_file_name, scope)
+        client = gspread.authorize(credentials)
+        
+        # 임시 파일 삭제
+        os.unlink(temp_file_name)
+        
+        return client
+        
+    except Exception as e:
+        st.error(f"Google Sheets 연결 중 오류 발생: {str(e)}")
+        return None
 
 # 스프레드시트에서 이미 수집된 채널 목록을 가져오는 함수
 def get_collected_channels_from_sheet(spreadsheet_url):
